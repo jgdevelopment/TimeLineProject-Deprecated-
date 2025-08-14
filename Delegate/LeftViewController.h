@@ -18,7 +18,7 @@
     
 }
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (retain, nonatomic) IBOutlet NSMutableArray *listOfItems;
+@property (retain, nonatomic) NSMutableArray *listOfItems;
 @property (retain, nonatomic) IBOutlet UIImageView *background;
 @property (nonatomic) int rowNum;
 @property (strong, nonatomic) IBOutlet UIView *view;

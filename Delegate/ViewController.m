@@ -8,8 +8,9 @@
 
 #import "ViewController.h"
 #import "AFNetworking.h"
-#import "SBJSON.h"
+#import "SBJson.h"
 #import "iCarousel.h"
+#import "NewViewController.h"
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 #import "LeftViewController.h"
@@ -293,9 +294,8 @@
     
     [_textField resignFirstResponder];
     
-    iCarouselExampleViewController *viewController = [[iCarouselExampleViewController alloc] init];
+    NewViewController *viewController = [[NewViewController alloc] initWithNibName:@"NewViewController" bundle:nil];
     viewController.searchTerm = self.textField.text;
-    
     [self presentViewController:viewController animated:YES completion:nil];
     _background.hidden = YES;
     _backView2.hidden = YES;

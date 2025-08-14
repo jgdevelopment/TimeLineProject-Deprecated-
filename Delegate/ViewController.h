@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LeftViewController.h"
-#import "iCarouselExampleViewController.h"
-#import "SBJSON.h"
+#import "SBJson.h"
 #import "iCarousel.h"
 #import "IIViewDeckController.h"
 
@@ -22,7 +21,6 @@
 //@property (strong, nonatomic) IBOutlet UINavigationBar *titleLabel;
 //@property (strong, nonatomic) IBOutlet UIImageView *box;
 
-@property (nonatomic) iCarouselExampleViewController *viewController;
 @property (strong, nonatomic) IBOutlet UITextField *textField;
 @property (strong, nonatomic) IBOutlet UILabel *label;
 @property BOOL test;

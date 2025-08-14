@@ -11,7 +11,7 @@
 
 #import "NewViewController.h"
 #import "AFNetworking.h"
-#import "SBJSON.h"
+#import "SBJson.h"
 
 
 @interface NewViewController ()
@@ -30,8 +30,10 @@
     [super viewDidLoad];
     
     // Initializing Data Source
-    //change to variable so any search works
-    NSString *defaultAPICall = @"http://en.wikipedia.org/w/api.php?action=query&rvprop=content&prop=revisions&format=json&titles=Timeline_of_United_States_history_(1790%E2%80%931819)";
+    NSString *term = self.searchTerm;
+    NSString *title = (term.length > 0) ? [term stringByReplacingOccurrencesOfString:@" " withString:@"_"] : @"Timeline_of_United_States_history_(1790%E2%80%931819)";
+    NSString *encodedTitle = [title stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *defaultAPICall = [NSString stringWithFormat:@"http://en.wikipedia.org/w/api.php?action=query&rvprop=content&prop=revisions&format=json&titles=%@", encodedTitle];
     [self apiCall: defaultAPICall];
 }
 
@@ -51,12 +53,19 @@
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        //225218 change to variable so any search works
-        _chop  = [[NSString alloc]initWithFormat:@"%@",[[[[JSON objectForKey:@"query"]objectForKey:@"pages"]objectForKey:@"225218"]objectForKey:@"revisions"]];
+        // derive page id dynamically from response
+        NSMutableCharacterSet *nonAlphaNumericCharacters2 = [[NSMutableCharacterSet alloc] init];
+        [nonAlphaNumericCharacters2 formUnionWithCharacterSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]];
+        NSString *pagesString = [NSString stringWithFormat:@"%@", [[JSON objectForKey:@"query"] objectForKey:@"pages"]];
+        NSMutableArray *substrings2 = [NSMutableArray new];
+        NSScanner *scanner2 = [NSScanner scannerWithString:pagesString];
+        NSString *substring2 = nil;
+        [scanner2 scanUpToString:@"=" intoString:&substring2];
+        [substrings2 addObject:substring2];
+        [scanner2 scanString:@"=" intoString:nil];
+        NSString *cut = [[[[substrings2 valueForKey:@"description"] componentsJoinedByString:@"\n\n"] componentsSeparatedByCharactersInSet:nonAlphaNumericCharacters2] componentsJoinedByString:@""];
+        _chop  = [[NSString alloc] initWithFormat:@"%@", [[[[JSON objectForKey:@"query"] objectForKey:@"pages"] objectForKey:cut] objectForKey:@"revisions"]];
         _timeLineText.text = _chop;
-        
-        
-        
         
         NSMutableArray *substrings = [NSMutableArray new];
         NSScanner *scanner = [NSScanner scannerWithString:_chop];
