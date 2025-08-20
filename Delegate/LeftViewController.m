@@ -32,6 +32,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UINavigationController *nav = (UINavigationController *)app.centerController;
+    ViewController *center = (ViewController *)nav.topViewController;
+    self.listOfItems = center.listOfItems;
+    if (!self.listOfItems) {
+        center.listOfItems = [NSMutableArray array];
+        self.listOfItems = center.listOfItems;
+    }
     
     _rowNum = 0;
     //list of items stores search data, allows user to press tab and re do search
@@ -78,26 +86,22 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView beginUpdates];
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Do whatever data deletion you need to do...
         [self.listOfItems removeObjectAtIndex:indexPath.row];
-        // Delete the row from the data source
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationLeft ];
         if(self.listOfItems.count==0){
             self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tableViewBackground.png"]];
         }
-        
-        
-        
     }
-    
     [tableView endUpdates];
     
-    
-    
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UINavigationController *nav = (UINavigationController *)app.centerController;
+    ViewController *center = (ViewController *)nav.topViewController;
+    [center.tableView reloadData];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 5;//self.listOfItems.count;
+    return self.listOfItems.count;
     
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

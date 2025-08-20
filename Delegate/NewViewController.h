@@ -21,6 +21,7 @@
 
 @property (nonatomic, retain) id <NewViewControllerDelegate> delegate;
 - (IBAction)backButton:(id)sender;
+@property (nonatomic, copy) NSString *searchTerm;
 @property (strong, nonatomic) IBOutlet UITextView *timeLineText;
 @property (strong, nonatomic) IBOutlet NSString *chop;
 

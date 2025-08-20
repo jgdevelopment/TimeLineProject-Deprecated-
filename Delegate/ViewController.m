@@ -8,8 +8,10 @@
 
 #import "ViewController.h"
 #import "AFNetworking.h"
-#import "SBJSON.h"
+#import "SBJson.h"
 #import "iCarousel.h"
+#import "NewViewController.h"
+#import "iCarouselExampleViewController.h"
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 #import "LeftViewController.h"
